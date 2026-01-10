@@ -1,0 +1,19 @@
+{
+    "project_name": "my-tauri-app",
+    "project_description": "A Tauri desktop application",
+    "author_name": "Developer",
+    "include_tailwind": ["yes", "no"],
+    "include_i18n": ["yes", "no"],
+    "include_tray": ["yes", "no"],
+    "include_updater": ["yes", "no"],
+    "include_fs": ["yes", "no"],
+    "include_python": ["no", "yes"],
+    "python_interpreter": ["rustpython", "pyo3"],
+    "default_locale": "en",
+    "_copy_without_render": [
+        "*.png",
+        "*.ico",
+        "*.icns"
+    ]
+}
+

@@ -1,0 +1,16 @@
+{
+  "app.title": "{{ cookiecutter.project_name }}",
+  "app.tagline": "Powered by Tauri + Svelte 5",
+  "app.greeting": "Hello, {name}!",
+  "action.greet": "Greet",
+  "action.loading": "Loading...",
+  "input.name.placeholder": "Enter your name...",
+  "footer.built_with": "Built with Tauri and Svelte 5",
+  "error.generic": "An error occurred",
+  "settings.language": "Language",
+  "settings.theme": "Theme",
+  "theme.light": "Light",
+  "theme.dark": "Dark",
+  "theme.system": "System"
+}
+

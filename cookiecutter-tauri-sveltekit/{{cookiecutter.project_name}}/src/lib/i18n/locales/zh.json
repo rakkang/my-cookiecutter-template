@@ -1,0 +1,16 @@
+{
+  "app.title": "{{ cookiecutter.project_name }}",
+  "app.tagline": "由 Tauri + Svelte 5 驱动",
+  "app.greeting": "你好，{name}！",
+  "action.greet": "打招呼",
+  "action.loading": "加载中...",
+  "input.name.placeholder": "输入你的名字...",
+  "footer.built_with": "使用 Tauri 和 Svelte 5 构建",
+  "error.generic": "发生错误",
+  "settings.language": "语言",
+  "settings.theme": "主题",
+  "theme.light": "浅色",
+  "theme.dark": "深色",
+  "theme.system": "跟随系统"
+}
+

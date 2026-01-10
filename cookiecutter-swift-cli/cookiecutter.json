@@ -1,0 +1,7 @@
+{
+    "project_name": "MyCLI",
+    "author_name": "Developer",
+    "description": "A Swift command-line tool",
+    "macos_deployment_target": "14.0"
+}
+

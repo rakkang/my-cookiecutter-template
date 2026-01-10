@@ -1,0 +1,9 @@
+{
+    "package_name": "MyPackage",
+    "author_name": "Developer",
+    "platforms": ["iOS", "macOS", "iOS and macOS"],
+    "ios_deployment_target": "17.0",
+    "macos_deployment_target": "14.0",
+    "include_ui": ["yes", "no"]
+}
+

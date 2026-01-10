@@ -1,0 +1,18 @@
+{
+    "project_name": "MyApp",
+    "bundle_identifier": "com.example.myapp",
+    "author_name": "Developer",
+    "organization_name": "{{ cookiecutter.author_name }}",
+    "platforms": ["iOS", "macOS", "iOS and macOS"],
+    "ios_deployment_target": "18.0",
+    "macos_deployment_target": "15.0",
+    "include_network": ["yes", "no"],
+    "include_persistence": ["yes", "no"],
+    "include_icloud": ["yes", "no"],
+    "_copy_without_render": [
+        "*.xcassets",
+        "*.png",
+        "*.jpg"
+    ]
+}
+
