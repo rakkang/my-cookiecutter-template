@@ -104,26 +104,64 @@ check_pnpm() {
     fi
 }
 
+# 显示旋转进度指示器
+spin() {
+    local pid=$1
+    local msg=$2
+    local -a spinchars=('-' '\' '|' '/')
+    local i=0
+    
+    printf "  ${CYAN}%s${NC} %s" "-" "$msg"
+    
+    while kill -0 "$pid" 2>/dev/null; do
+        i=$(( (i + 1) % 4 ))
+        printf "\r  ${CYAN}%s${NC} %s" "${spinchars[$i]}" "$msg"
+        sleep 0.1
+    done
+    
+    wait "$pid"
+    local exit_code=$?
+    
+    printf "\r\033[K"
+    
+    return $exit_code
+}
+
+# 运行命令并显示进度
+run_with_progress() {
+    local msg=$1
+    shift
+    
+    "$@" >/dev/null 2>&1 &
+    local pid=$!
+    
+    spin $pid "$msg"
+    local exit_code=$?
+    
+    if [[ $exit_code -eq 0 ]]; then
+        print_success "$msg"
+    else
+        print_error "$msg 失败"
+        return $exit_code
+    fi
+}
+
 # 设置虚拟环境并安装依赖
 setup_venv() {
     if [ ! -d "$VENV_DIR" ]; then
-        print_step "创建虚拟环境..."
-        $PYTHON_CMD -m venv "$VENV_DIR"
-        print_success "虚拟环境已创建"
+        run_with_progress "创建虚拟环境" $PYTHON_CMD -m venv "$VENV_DIR"
     fi
     
-    print_step "激活虚拟环境..."
     source "$VENV_DIR/bin/activate"
     
-    print_step "安装依赖..."
+    # 安装依赖（带进度）
     if [[ "$PIP_CMD" == "uv pip" ]]; then
-        uv pip install --python "$VENV_DIR/bin/python" --quiet --upgrade pip
-        uv pip install --python "$VENV_DIR/bin/python" --quiet -r "$CLI_DIR/requirements.txt"
+        run_with_progress "升级 pip" uv pip install --upgrade pip || true
+        run_with_progress "安装依赖" uv pip install -r "$CLI_DIR/requirements.txt"
     else
-        $PIP_CMD install --quiet --upgrade pip
-        $PIP_CMD install --quiet -r "$CLI_DIR/requirements.txt"
+        run_with_progress "升级 pip" "$VENV_DIR/bin/pip" install --upgrade pip
+        run_with_progress "安装依赖" "$VENV_DIR/bin/pip" install -r "$CLI_DIR/requirements.txt"
     fi
-    print_success "依赖安装完成"
 }
 
 # 主函数

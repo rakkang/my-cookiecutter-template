@@ -1,0 +1,66 @@
+[project]
+name = "{{ cookiecutter.project_slug }}"
+version = "0.1.0"
+description = "{{ cookiecutter.description }}"
+authors = [
+    {name = "{{ cookiecutter.author_name }}"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "psutil>=5.9.0",
+{%- if cookiecutter.use_fastapi == "yes" %}
+    "fastapi>=0.104.0",
+{%- if cookiecutter.python_version == "3.8" %}
+    "uvicorn>=0.24.0",
+{%- else %}
+    "uvicorn[standard]>=0.24.0",
+{%- endif %}
+    "httpx>=0.25.0",
+{%- endif %}
+{%- if cookiecutter.use_langchain == "yes" %}
+    "langchain>=0.1.0",
+    "langchain-openai>=0.0.2",
+{%- endif %}
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

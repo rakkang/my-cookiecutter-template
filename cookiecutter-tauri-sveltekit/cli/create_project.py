@@ -17,6 +17,7 @@ from typing import Optional, Union
 
 try:
     import questionary
+    from questionary import Style
     from rich.console import Console
     from rich.panel import Panel
     from rich.text import Text
@@ -27,6 +28,18 @@ except ImportError:
 
 
 console = Console()
+
+# 自定义 questionary 样式：高亮背景显示选中项
+CUSTOM_STYLE = Style([
+    ("qmark", "fg:cyan bold"),             # 问号
+    ("question", "bold"),                  # 问题文本
+    ("answer", "fg:cyan bold"),            # 已回答的值
+    ("pointer", "fg:black bg:cyan bold"),  # 指针（与高亮一致）
+    ("highlighted", "fg:black bg:cyan"),   # 高亮选中项
+    ("selected", "fg:cyan"),               # 已选择的复选框项
+    ("text", ""),                          # 普通文本
+    ("instruction", "fg:gray"),            # 指令提示
+])
 
 # 模板目录 (cli 文件夹的父目录)
 TEMPLATE_DIR = Path(__file__).parent.parent.absolute()
@@ -126,7 +139,7 @@ def interactive_prompt() -> tuple:
     if include_i18n is None:
         sys.exit(0)
 
-    # 默认语言 (仅在启用 i18n 时询问)
+    # 默认语言 (仅在启用 i18n 时询问，English 在前作为默认)
     default_locale = "en"
     if include_i18n:
         default_locale = questionary.select(
@@ -135,7 +148,7 @@ def interactive_prompt() -> tuple:
                 questionary.Choice("English", value="en"),
                 questionary.Choice("中文", value="zh"),
             ],
-            default="en",
+            style=CUSTOM_STYLE,
         ).ask()
         if not default_locale:
             sys.exit(0)
@@ -174,7 +187,7 @@ def interactive_prompt() -> tuple:
     if include_python is None:
         sys.exit(0)
 
-    # Python 解释器 (仅在启用 Python 时询问)
+    # Python 解释器 (仅在启用 Python 时询问，RustPython 在前作为默认)
     python_interpreter = "rustpython"
     if include_python:
         python_interpreter = questionary.select(
@@ -183,14 +196,14 @@ def interactive_prompt() -> tuple:
                 questionary.Choice("RustPython (静态链接，部署简单)", value="rustpython"),
                 questionary.Choice("PyO3 (需要系统 Python，支持更多库)", value="pyo3"),
             ],
-            default="rustpython",
+            style=CUSTOM_STYLE,
         ).ask()
         if not python_interpreter:
             sys.exit(0)
 
     console.print("\n[bold]输出位置[/bold]\n")
 
-    # 输出目录选择
+    # 输出目录选择（当前目录在前作为默认）
     output_dir = None
     output_choice = questionary.select(
         "项目输出目录:",
@@ -199,7 +212,7 @@ def interactive_prompt() -> tuple:
             questionary.Choice("通过 Finder 选择...", value="finder"),
             questionary.Choice("手动输入路径", value="manual"),
         ],
-        default="cwd",
+        style=CUSTOM_STYLE,
     ).ask()
     if not output_choice:
         sys.exit(0)

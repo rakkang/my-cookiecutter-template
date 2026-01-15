@@ -1,0 +1,11 @@
+{
+    "project_name": "my-python-app",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace('-', '_').replace(' ', '_') }}",
+    "author_name": "Developer",
+    "description": "A Python application",
+    "use_fastapi": ["yes", "no"],
+    "use_react": ["yes", "no"],
+    "use_langchain": ["yes", "no"],
+    "project_structure": ["flat", "layered"],
+    "python_version": ["3.8", "system"]
+}

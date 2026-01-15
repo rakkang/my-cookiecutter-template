@@ -17,6 +17,7 @@ from typing import Optional, Union
 
 try:
     import questionary
+    from questionary import Style
     from rich.console import Console
     from rich.panel import Panel
     from rich.text import Text
@@ -27,6 +28,18 @@ except ImportError:
 
 
 console = Console()
+
+# 自定义 questionary 样式：高亮背景显示选中项
+CUSTOM_STYLE = Style([
+    ("qmark", "fg:cyan bold"),             # 问号
+    ("question", "bold"),                  # 问题文本
+    ("answer", "fg:cyan bold"),            # 已回答的值
+    ("pointer", "fg:black bg:cyan bold"),  # 指针（与高亮一致）
+    ("highlighted", "fg:black bg:cyan"),   # 高亮选中项
+    ("selected", "fg:cyan"),               # 已选择的复选框项
+    ("text", ""),                          # 普通文本
+    ("instruction", "fg:gray"),            # 指令提示
+])
 
 # 模板目录 (cli 文件夹的父目录)
 TEMPLATE_DIR = Path(__file__).parent.parent.absolute()
@@ -125,7 +138,7 @@ def interactive_prompt() -> tuple:
 
     console.print("\n[bold]平台选择[/bold]\n")
 
-    # 平台选择
+    # 平台选择（iOS 在前作为默认）
     platforms = questionary.select(
         "目标平台:",
         choices=[
@@ -133,7 +146,7 @@ def interactive_prompt() -> tuple:
             questionary.Choice("macOS", value="macOS"),
             questionary.Choice("iOS 和 macOS (通用)", value="iOS and macOS"),
         ],
-        default="iOS",
+        style=CUSTOM_STYLE,
     ).ask()
     if not platforms:
         sys.exit(0)
@@ -168,7 +181,7 @@ def interactive_prompt() -> tuple:
 
     console.print("\n[bold]输出位置[/bold]\n")
 
-    # 输出目录选择
+    # 输出目录选择（当前目录在前作为默认）
     output_dir = None
     output_choice = questionary.select(
         "项目输出目录:",
@@ -177,7 +190,7 @@ def interactive_prompt() -> tuple:
             questionary.Choice("通过 Finder 选择...", value="finder"),
             questionary.Choice("手动输入路径", value="manual"),
         ],
-        default="cwd",
+        style=CUSTOM_STYLE,
     ).ask()
     if not output_choice:
         sys.exit(0)
