@@ -4,12 +4,13 @@
 
 ## 📦 包含的模板
 
-本仓库包含以下 4 个 CookieCutter 模板：
+本仓库包含以下 5 个 CookieCutter 模板：
 
 1. **cookiecutter-swift-cli** - Swift 命令行工具模板
 2. **cookiecutter-swift-package** - Swift Package 模板
 3. **cookiecutter-swiftui-starter** - SwiftUI 应用启动模板（支持 iOS/macOS）
 4. **cookiecutter-tauri-sveltekit** - Tauri + SvelteKit 桌面应用模板
+5. **cookiecutter-python-app** - Python 应用模板（FastAPI / React / LangChain）
 
 ## 🚀 如何使用
 
@@ -33,6 +34,10 @@ cd cookiecutter-swiftui-starter
 # Tauri + SvelteKit 应用
 cd cookiecutter-tauri-sveltekit
 ./create_project.sh
+
+# Python 应用
+cd cookiecutter-python-app
+./create_project.sh
 ```
 
 脚本会自动：
@@ -54,6 +59,7 @@ cookiecutter cookiecutter-swift-cli
 cookiecutter cookiecutter-swift-package
 cookiecutter cookiecutter-swiftui-starter
 cookiecutter cookiecutter-tauri-sveltekit
+cookiecutter cookiecutter-python-app
 ```
 
 ## 📋 环境要求
@@ -77,6 +83,14 @@ cookiecutter cookiecutter-tauri-sveltekit
   - macOS: Xcode Command Line Tools
   - Linux: `libwebkit2gtk-4.0-dev`, `build-essential`, `curl`, `wget`, `libssl-dev`, `libgtk-3-dev`, `libayatana-appindicator3-dev`, `librsvg2-dev`
   - Windows: Microsoft Visual Studio C++ Build Tools
+
+### Python 应用模板
+
+- **Python**: 3.8+ 或系统最新版本
+- **Node.js**: 18+ 和 pnpm/npm（如果包含 React 前端）
+- **可选工具**:
+  - `pyenv` 或 `conda`（如果选择 Python 3.8）
+  - `uv`（可选，用于更快的包管理）
 
 ## 🔧 模板详情
 
@@ -155,6 +169,46 @@ cookiecutter cookiecutter-tauri-sveltekit
 - `python_interpreter`: Python 解释器类型（rustpython/pyo3）
 - `default_locale`: 默认语言
 
+### cookiecutter-python-app
+
+生成可配置的 Python 应用项目，包含：
+- **核心功能**:
+  - 日志系统（支持文件轮转、错误分离）
+  - 环境配置管理（支持多环境变量文件）
+  - 统一 API 响应结构
+  - 测试框架（pytest）
+- **可选模块**:
+  - **FastAPI**: REST API 框架（包含 SSE 流式响应支持）
+  - **React 前端**: Vite + React 18 + TailwindCSS + React Router（包含布局骨架）
+  - **LangChain**: LLM 执行器基类（支持 run/stream/structured 模式）
+- **项目结构**:
+  - 扁平结构（flat）或分层架构（layered）
+- **开发工具**:
+  - 环境初始化脚本
+  - 开发启动脚本（自动检测并启动前后端）
+  - 示例脚本模板
+
+**配置项：**
+- `project_name`: 项目名称（kebab-case）
+- `description`: 项目描述
+- `author_name`: 作者/组织名称
+- `use_fastapi`: 是否包含 FastAPI（yes/no）
+- `use_react`: 是否包含 React 前端（yes/no）
+- `use_langchain`: 是否包含 LangChain（yes/no）
+- `project_structure`: 项目结构（flat/layered）
+- `python_version`: Python 版本（3.8/system）
+
+**快速开始：**
+```bash
+cd cookiecutter-python-app
+./create_project.sh
+
+# 生成项目后
+cd <project_name>
+./scripts/init_env.sh    # 初始化环境
+./scripts/dev.sh         # 启动开发服务器
+```
+
 ## 📝 示例
 
 ### 创建 Swift CLI 工具
@@ -177,6 +231,28 @@ cd cookiecutter-swiftui-starter
 ./create_project.sh
 
 # 交互式输入配置项...
+```
+
+### 创建 Python 应用
+
+```bash
+cd cookiecutter-python-app
+./create_project.sh
+
+# 交互式输入：
+# project_name: my-api-service
+# description: A Python API service
+# author_name: Your Name
+# use_fastapi: yes
+# use_react: yes
+# use_langchain: no
+# project_structure: flat
+# python_version: system
+
+# 生成项目后
+cd my-api-service
+./scripts/init_env.sh    # 初始化环境并安装依赖
+./scripts/dev.sh          # 启动后端和前端
 ```
 
 ## 🤝 贡献
