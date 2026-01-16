@@ -194,10 +194,11 @@ setup_venv() {
     source .venv/bin/activate
     
     if [[ "$PIP_CMD" == "uv pip" ]]; then
-        run_with_progress "升级 pip" uv pip install --upgrade pip || true
-        run_pip_install "安装项目依赖" uv pip install -e .
+        # uv 不需要升级 pip，需要显式指定 Python 路径
+        run_pip_install "安装项目依赖" uv pip install --python .venv/bin/python -e .
     else
-        run_with_progress "升级 pip" .venv/bin/pip install --upgrade pip
+        # 升级 pip 以确保能安装现代 Python 包（可选，失败不影响）
+        run_with_progress "升级 pip" .venv/bin/pip install --upgrade pip || true
         run_pip_install "安装项目依赖" .venv/bin/pip install -e .
     fi
 }
