@@ -4,6 +4,11 @@
 
 set -e
 
+if [ -z "${BASH_VERSION:-}" ]; then
+    echo "请使用 bash 运行：bash create_project.sh 或 ./create_project.sh"
+    exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLI_DIR="$SCRIPT_DIR/cli"
 VENV_DIR="$CLI_DIR/.venv"
@@ -156,10 +161,10 @@ setup_venv() {
     
     # 安装依赖（带进度）
     if [[ "$PIP_CMD" == "uv pip" ]]; then
-        run_with_progress "升级 pip" uv pip install --upgrade pip || true
-        run_with_progress "安装依赖" uv pip install -r "$CLI_DIR/requirements.txt"
+        # uv 不需要升级 pip，需要显式指定 Python 路径
+        run_with_progress "安装依赖" uv pip install --python "$VENV_DIR/bin/python" -r "$CLI_DIR/requirements.txt"
     else
-        run_with_progress "升级 pip" "$VENV_DIR/bin/pip" install --upgrade pip
+        run_with_progress "升级 pip" "$VENV_DIR/bin/pip" install --upgrade pip || true
         run_with_progress "安装依赖" "$VENV_DIR/bin/pip" install -r "$CLI_DIR/requirements.txt"
     fi
 }
